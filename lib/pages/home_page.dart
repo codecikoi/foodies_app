@@ -14,14 +14,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    var screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    var screenWeight = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenWeight = MediaQuery.of(context).size.width;
 
     Future<List<Widget>> createList() async {
       List<Widget> items = <Widget>[];
@@ -78,10 +72,11 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(object['placeName']),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 2.0, bottom: 2.0),
+                            padding:
+                                const EdgeInsets.only(top: 2.0, bottom: 2.0),
                             child: Text(
-                              finalString, overflow: TextOverflow.ellipsis,
+                              finalString,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 12.0, color: Colors.black54),
                               maxLines: 1,
@@ -121,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         'Foody',
                         style:
-                        TextStyle(fontSize: 50.0, fontFamily: 'Samantha'),
+                            TextStyle(fontSize: 50.0, fontFamily: 'Samantha'),
                       ),
                       IconButton(
                         onPressed: () {},
@@ -133,33 +128,40 @@ class _HomePageState extends State<HomePage> {
                 BannerWidgetArea(),
                 Container(
                   child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: FutureBuilder(
-                          initialData: <Widget>[Text("")],
-                          future: createList(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: ListView(
+                    padding: EdgeInsets.all(8.0),
+                    child: FutureBuilder<List<Widget>>(
+                        initialData: [Text("")],
+                        future: createList(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data != null) {
+                          } else if (snapshot.hasError) {
+                            print('hasError');
+                            throw ((print));
+                            return Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: ListView(
                                   primary: false,
                                   shrinkWrap: true,
-                                  children: snapshot.data,
-                                ),
-                              );
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          })),
+                                  children: snapshot.data
+                              ),
+                            );
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        }),
+                  ),
                 ),
               ],
             ),
           ),
         ),
-
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {},
-        child: Icon(MdiIcons.food, color: Colors.white,),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(
+          MdiIcons.food,
+          color: Colors.white,
+        ),
         backgroundColor: Colors.black,
       ),
     );
